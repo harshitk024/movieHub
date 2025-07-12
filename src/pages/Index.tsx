@@ -10,7 +10,7 @@ const Index = () => {
   const { movies, loading, searchTerm, setSearchTerm, totalMovies, filteredCount } = useMovies();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -18,10 +18,10 @@ const Index = () => {
         
         {!loading && (
           <div className="mb-6 text-center">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               {searchTerm ? 'Search Results' : 'Trending Movies'}
             </h2>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               {searchTerm 
                 ? `Found ${filteredCount} ${filteredCount === 1 ? 'movie' : 'movies'} matching "${searchTerm}"`
                 : `Discover ${totalMovies} popular movies`}
@@ -34,8 +34,8 @@ const Index = () => {
         ) : movies.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🎬</div>
-            <h3 className="text-2xl font-bold text-white mb-2">No movies found</h3>
-            <p className="text-gray-400 max-w-md mx-auto">
+            <h3 className="text-2xl font-bold text-foreground mb-2">No movies found</h3>
+            <p className="text-muted-foreground max-w-md mx-auto">
               We couldn't find any movies matching "{searchTerm}". 
               Try searching for a different title, genre, or year.
             </p>
@@ -49,12 +49,12 @@ const Index = () => {
         )}
       </main>
       
-      <footer className="bg-gray-900/50 backdrop-blur-sm border-t border-gray-800 mt-16">
+      <footer className="bg-card/50 backdrop-blur-sm border-t border-border mt-16">
         <div className="container mx-auto px-4 py-8 text-center">
-          <p className="text-gray-400">
+          <p className="text-muted-foreground">
             MovieMind - Your gateway to cinematic discovery
           </p>
-          <p className="text-gray-500 text-sm mt-2">
+          <p className="text-muted-foreground/70 text-sm mt-2">
             Built with React, TypeScript & Tailwind CSS
           </p>
         </div>

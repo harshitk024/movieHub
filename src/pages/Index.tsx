@@ -1,12 +1,64 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState, useEffect } from 'react';
+import Header from '../components/Header';
+import SearchBar from '../components/SearchBar';
+import MovieCard from '../components/MovieCard';
+import LoadingSkeleton from '../components/LoadingSkeleton';
+import { useMovies } from '../hooks/useMovies';
 
 const Index = () => {
+  const { movies, loading, searchTerm, setSearchTerm, totalMovies, filteredCount } = useMovies();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <Header />
+      
+      <main className="container mx-auto px-4 py-8">
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        
+        {!loading && (
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-bold text-white mb-2">
+              {searchTerm ? 'Search Results' : 'Trending Movies'}
+            </h2>
+            <p className="text-gray-400">
+              {searchTerm 
+                ? `Found ${filteredCount} ${filteredCount === 1 ? 'movie' : 'movies'} matching "${searchTerm}"`
+                : `Discover ${totalMovies} popular movies`}
+            </p>
+          </div>
+        )}
+
+        {loading ? (
+          <LoadingSkeleton />
+        ) : movies.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🎬</div>
+            <h3 className="text-2xl font-bold text-white mb-2">No movies found</h3>
+            <p className="text-gray-400 max-w-md mx-auto">
+              We couldn't find any movies matching "{searchTerm}". 
+              Try searching for a different title, genre, or year.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </main>
+      
+      <footer className="bg-gray-900/50 backdrop-blur-sm border-t border-gray-800 mt-16">
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p className="text-gray-400">
+            MovieMind - Your gateway to cinematic discovery
+          </p>
+          <p className="text-gray-500 text-sm mt-2">
+            Built with React, TypeScript & Tailwind CSS
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };

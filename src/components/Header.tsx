@@ -10,7 +10,7 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <Film className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              MovieMind
+              MoviesHub
             </h1>
           </div>
           
@@ -26,9 +26,9 @@ const Header = () => {
           </div>
         </div>
         
-        <p className="text-center text-muted-foreground mt-2 text-sm">
+        {/* <p className="text-center text-muted-foreground mt-2 text-sm">
           Discover your next favorite movie
-        </p>
+        </p> */}
       </div>
     </header>
   );

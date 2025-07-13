@@ -12,8 +12,8 @@ const SearchBar = ({ searchTerm, onSearchChange }: SearchBarProps) => {
           placeholder="Search for movies..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-2xl 
-                   text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+          className="w-full pl-12 pr-4 py-4 border border-gray-700 rounded-2xl 
+                   text-black placeholder-gray-400 focus:outline-none focus:ring-2 
                    focus:ring-purple-500 focus:border-transparent backdrop-blur-sm
                    transition-all duration-300 text-lg"
         />

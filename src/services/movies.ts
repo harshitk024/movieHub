@@ -4,10 +4,12 @@ import { Genre, Movie } from "@/types/movie"
 const baseUrl = "https://api.themoviedb.org"
 const key: string = import.meta.env.VITE_TMDB_API_KEY
 
-interface MovieResponseInterface{
+interface MoviesResponseInterface{
     page: string
     results: Array<Movie>
 } 
+
+
 
 interface GenreResponseInterface{
 
@@ -16,7 +18,7 @@ interface GenreResponseInterface{
 
 const getMovies = async () => {
 
-    const result = await axios.get<MovieResponseInterface>(`${baseUrl}/3/trending/movie/week?api_key=${key}`)
+    const result = await axios.get<MoviesResponseInterface>(`${baseUrl}/3/trending/movie/week?api_key=${key}`)
     console.log("Fetching")
     const {results} = await result.data
 
@@ -33,16 +35,21 @@ const getGenres = async () => {
     return genres
 }
 
-const searchMovie = async (movie:string) => {
+const searchMovies = async (movie:string) => {
 
-    const result = await axios.get<MovieResponseInterface>(`${baseUrl}/3/search/movie?api_key=${key}&query=${encodeURIComponent(movie)}&adult=false`)
+    const result = await axios.get<MoviesResponseInterface>(`${baseUrl}/3/search/movie?api_key=${key}&query=${encodeURIComponent(movie)}&adult=false`)
 
     const {results} = await result.data
-
-    console.log(results)
     
     return results
 
 }
 
-export default {getMovies,getGenres,searchMovie}
+const getMovie = async (id: string) =>{
+
+    const result = await axios.get<Movie>(`${baseUrl}/3/movie/${id}?api_key=${key}`)
+    return result.data
+
+}
+
+export default {getMovies,getGenres,searchMovies,getMovie}

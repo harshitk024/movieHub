@@ -19,10 +19,12 @@ export interface Movie{
   original_language: string,
   poster_path: string,
   genre_ids: Array<string>,
+  genres?: Array<Genre>;
   popularity: number,
   release_date: string,
   vote_average: number,
-  vote_count: number
+  vote_count: number,
+  runtime: number
 }
 
 export interface Genre{

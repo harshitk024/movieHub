@@ -70,7 +70,7 @@ export const useMovies = () => {
       
       setLoading(true)
       const delayDebounce = setTimeout(() => {
-        MovieService.searchMovie(trimmed).then((results) => {
+        MovieService.searchMovies(trimmed).then((results) => {
           setMovies(results);
           if(results.length == 0) setFailed(true)
           setLoading(false)

@@ -1,10 +1,19 @@
 import { Star, Calendar} from "lucide-react";
 import { MovieCardProps } from "../types/movie";
+import { useNavigate } from "react-router-dom";
 
 
 const MovieCard = ({ movie, genres}: MovieCardProps) => {
+
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+
+    navigate(`/${movie.id}`)
+  }
+
   return (
-    <div
+    <div onClick={handleClick}
       className=" flex flex-col group relative rounded-xl overflow-hidden backdrop-blur-sm 
                     border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 
                     hover:scale-105   cursor-default"

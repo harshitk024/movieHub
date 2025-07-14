@@ -1,12 +1,10 @@
 
-import Header from '../components/Header';
-import SearchBar from '../components/SearchBar';
-import MovieCard from '../components/MovieCard';
-import LoadingSkeleton from '../components/LoadingSkeleton';
-import { useMovies } from '../hooks/useMovies';
+import Header from '../../components/Header';
+import SearchBar from '../../components/SearchBar';
+import MovieCard from '../../components/MovieCard';
+import LoadingSkeleton from '../../components/LoadingSkeleton';
 
-const Index = () => {
-  const { movies, loading, searchTerm, setSearchTerm, genres,failed,filteredCount,totalMovies} = useMovies();
+const Index = ({ movies, loading, searchTerm, setSearchTerm, genres,failed,filteredCount,totalMovies}) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
@@ -45,7 +43,6 @@ const Index = () => {
             movies.map((movie) => {
 
               const movieGenres = movie.genre_ids.map(id => genres.find(genre => genre.id === Number(id)).name || 'unknown') 
-              console.log("Movie found: ",movie)
 
               return(
               

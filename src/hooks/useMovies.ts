@@ -14,25 +14,39 @@ export const useMovies = () => {
   const [failed, setFailed] = useState(false)
 
 
+  const updateMovies = (movies,genres) => {
+
+    const updatedMovies = movies.map((movie) => ({
+      ...movie,
+      genres: movie.genre_ids.map((id) => (
+        genres.find((gen) => Number(gen.id) === Number(id))
+      ))
+    }))
+
+    setMovies(updatedMovies)
+    return updatedMovies
+  }
+
+
   // Simulate API loading
   useEffect(() => {
 
-    const fetchMovies = async () => {
 
-      const result = await MovieService.getMovies()
-      setMovies(result)
+    const fetchData = async () => {
+
+      const movieResult = await MovieService.getMovies()
+      const genreResult = await MovieService.getGenres()
+
+
+      setGenres(genreResult)
+      updateMovies(movieResult,genreResult)
       setLoading(false)
 
     }
 
-    const fetchGenres = async () => {
+    fetchData()
 
-      const result = await MovieService.getGenres()
-      setGenres(result)
-    }
 
-    fetchMovies()
-    fetchGenres()
   }, []);
 
 
@@ -44,10 +58,10 @@ export const useMovies = () => {
 
       return (
         movie.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        movie.genre_ids.map(genre => genres.find(g => g.id === Number(genre))).some(genre =>
-          genre.name.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ||
-        movie.release_date.toString().includes(searchTerm)
+          genres.some(genre =>
+            genre.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ) ||
+          movie.release_date === null ? false : movie.release_date.toString().includes(searchTerm)
       )
     })
 
@@ -59,29 +73,29 @@ export const useMovies = () => {
 
     const trimmed = searchTerm.trim()
 
-    if(!trimmed){
+    if (!trimmed) {
       MovieService.getMovies().then(result => {
-        setMovies(result)
+        updateMovies(result,genres)
       })
       return;
     }
 
-    if(filteredMovies.length === 0){
-      
+    if (filteredMovies.length === 0) {
+
       setLoading(true)
       const delayDebounce = setTimeout(() => {
         MovieService.searchMovies(trimmed).then((results) => {
-          setMovies(results);
-          if(results.length == 0) setFailed(true)
+          updateMovies(results,genres)
+          if (results.length == 0) setFailed(true)
           setLoading(false)
         })
-      },1000)
+      }, 1000)
 
       return () => clearTimeout(delayDebounce)
     }
-    
 
-  },[searchTerm])
+
+  }, [searchTerm])
 
 
 

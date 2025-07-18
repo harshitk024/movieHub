@@ -3,7 +3,7 @@ import { MovieCardProps } from "../types/movie";
 import { useNavigate } from "react-router-dom";
 
 
-const MovieCard = ({ movie, genres}: MovieCardProps) => {
+const MovieCard = ({ movie }: MovieCardProps) => {
 
   const navigate = useNavigate()
 
@@ -43,7 +43,7 @@ const MovieCard = ({ movie, genres}: MovieCardProps) => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-1 text-gray-400">
             <Calendar className="h-4 w-4" />
-            <span className="text-sm">{movie.release_date.slice(0,4)}</span>
+            <span className="text-sm">{movie.release_date === null ? "N/A" :movie.release_date.slice(0,4)}</span>
           </div>
 
           {(
@@ -55,19 +55,19 @@ const MovieCard = ({ movie, genres}: MovieCardProps) => {
         </div>
 
         <div className="flex flex-wrap gap-1 mb-3">
-          {genres.map((genre) => (
+          {movie.genres.map((genre) => (
             <span
-              key={genre}
+              key={genre.id}
               className="px-2 py-1 bg-purple-600/30 text-black-300 text-xs rounded-md 
                        border border-purple-500/30 group-hover:text-white"
             >
-              {genre}
+              {genre.name}
             </span>
           ))}
-          {genres.length > 2 && (
+          {movie.genres.length > 2 && (
             <span className="px-2 py-1 bg-gray-600/30 text-black-400 text-xs rounded-md 
                            border border-gray-500/30 group-hover:text-white">
-              +{genres.length - 2}
+              +{movie.genres.length - 2}
             </span>
           )}
         </div>

@@ -42,11 +42,11 @@ const Index = ({ movies, loading, searchTerm, setSearchTerm, genres,failed,filte
            {
             movies.map((movie) => {
 
-              const movieGenres = movie.genre_ids.map(id => genres.find(genre => genre.id === Number(id)).name || 'unknown') 
+              // const movieGenres = movie.genre_ids.map(id => genres.find(genre => genre.id === Number(id)).name || 'unknown') 
 
               return(
               
-                <MovieCard key={movie.id} movie={movie} genres={movieGenres} />
+                <MovieCard key={movie.id} movie={movie}  />
            
               )
             })

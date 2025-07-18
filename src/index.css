@@ -47,6 +47,11 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-primary: 'Poppins', sans-serif;
+    --color-text: #111827;
+
+    
   }
 
   .dark {
@@ -96,5 +101,42 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+
+  .h-primary{
+    font-family: var(--font-primary);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text)
+  }
+
+  .h-secondary {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .text-base {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text);
+  } 
+
+  .text-label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .font-montserrat {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    font-size: xx-large;
   }
 }

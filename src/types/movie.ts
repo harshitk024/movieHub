@@ -36,7 +36,6 @@ export interface Genre{
 
 export interface MovieCardProps {
   movie: Movie;
-  genres: Array<string>
 }
 
 export interface SearchBarProps {

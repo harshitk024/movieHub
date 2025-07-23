@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/harshit/Main/moviesHub/movie-hub-backend/venv
+set -gx VIRTUAL_ENV /home/harshit/Main/moviesHub/movie-mind-grid/movie-hub-backend/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

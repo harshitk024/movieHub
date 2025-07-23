@@ -1,4 +1,4 @@
-#!/home/harshit/Main/moviesHub/movie-hub-backend/venv/bin/python3
+#!/home/harshit/Main/moviesHub/movie-mind-grid/movie-hub-backend/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

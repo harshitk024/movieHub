@@ -9,8 +9,6 @@ interface MoviesResponseInterface {
     results: Array<Movie>
 }
 
-
-
 interface GenreResponseInterface {
 
     genres: Genre[]
@@ -23,6 +21,7 @@ const getMovies = async () => {
 
         const result = await axios.get<MoviesResponseInterface>(`${baseUrl}/3/trending/movie/week?api_key=${key}`)
         const { results } = await result.data
+        console.log(results)
         return results
 
     } catch (error) {
@@ -61,5 +60,7 @@ const getMovie = async (id: string) => {
     return result.data
 
 }
+
+
 
 export default { getMovies, getGenres, searchMovies, getMovie }

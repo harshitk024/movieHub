@@ -1,58 +1,62 @@
 // import GoogleLogin from "../ui/GoogleLogin";
 import React, { useState } from "react";
-import {Input} from "../ui/input";
-import UserService from "@/services/user"
+import { Input } from "../ui/input";
+import UserService from "@/services/user";
 import { UserState } from "@/types/movie";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/authContext";
 // import {loginUser} from "../../services/users";
 // import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "@react-oauth/google";
 
-
-interface LoginInput{
-
-  username: string,
-  password: string,
-
+interface LoginInput {
+  username: string;
+  password: string;
 }
 
-interface LoginBoxProps{
-
+interface LoginBoxProps {
   toggleLogin: () => void;
-  loginInput: LoginInput,
-  setLoginInput: React.Dispatch<React.SetStateAction<LoginInput>>
-  setUser: React.Dispatch<React.SetStateAction<UserState>>
-
+  loginInput: LoginInput;
+  setLoginInput: React.Dispatch<React.SetStateAction<LoginInput>>;
+  // setUser: React.Dispatch<React.SetStateAction<UserState>>
 }
 
-const LoginBox: React.FC<LoginBoxProps> = ({toggleLogin,loginInput,setLoginInput,setUser}) => {
+const LoginBox: React.FC<LoginBoxProps> = ({
+  toggleLogin,
+  loginInput,
+  setLoginInput,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isLoading,setIsLoading] = useState(false)
+  const { dispatch } = useAuth();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const user = await UserService.login_user(loginInput);
 
-    e.preventDefault()
+    if (user !== undefined) {
 
-    setIsLoading(true)
-    const user =  await UserService.login_user(loginInput)
-    setUser(user)
+      dispatch({type: "LOGIN", payload: {...user,isAuthenticated: true}})
+     
+      navigate("/");
+    } else {
+      window.alert("Login Failed");
+    }
+
+    // setUser(user)
     setLoginInput({
       username: "",
-      password: ""
-    })
-    setIsLoading(false)
-    navigate("/")
-
-
-  }
-
-
+      password: "",
+    });
+    setIsLoading(false);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center ">
-      <div className = " flex flex-col p-5 items-center">
+      <div className=" flex flex-col p-5 items-center">
         <div className="flex flex-col items-center justify-center gap-5">
           <div>
             <div className="h-primary">Welcome Back</div>
@@ -63,12 +67,25 @@ const LoginBox: React.FC<LoginBoxProps> = ({toggleLogin,loginInput,setLoginInput
             <div className = "text-base opacity-50">or</div>
         </div> */}
         <form className="flex flex-col gap-2 mt-5" onSubmit={handleLogin}>
-            <Input placeholder = "Enter email or username" value = {loginInput.username} onChange = {(e) => setLoginInput({...loginInput,username: e.target.value})}/>
-            <Input placeholder = "Enter Password" type = "password" value = {loginInput.password} onChange = {(e) => setLoginInput({...loginInput,password: e.target.value})}/>
-            <div className = "flex items-center text-sm text-cyan-700 justify-end cursor-pointer hover:underline">
-                Forgot Password?
-            </div>
-<button
+          <Input
+            placeholder="Enter email or username"
+            value={loginInput.username}
+            onChange={(e) =>
+              setLoginInput({ ...loginInput, username: e.target.value })
+            }
+          />
+          <Input
+            placeholder="Enter Password"
+            type="password"
+            value={loginInput.password}
+            onChange={(e) =>
+              setLoginInput({ ...loginInput, password: e.target.value })
+            }
+          />
+          <div className="flex items-center text-sm text-cyan-700 justify-end cursor-pointer hover:underline">
+            Forgot Password?
+          </div>
+          <button
             type="submit"
             className="bg-primary mt-4 text-white px-10 py-3 rounded-xl hover:bg-secondary-500 flex justify-center gap-8"
             disabled={isLoading}
@@ -96,10 +113,15 @@ const LoginBox: React.FC<LoginBoxProps> = ({toggleLogin,loginInput,setLoginInput
               </svg>
             )}
             {isLoading ? null : "Submit"}
-          </button>        </form>
-        <div className = "flex flex-col w-50 mt-4  ">
-            <div className = "text-sm text-center opacity-50 hover:underline cursor-default" onClick={() => toggleLogin()}>Don’t have an  account?
-            </div>
+          </button>{" "}
+        </form>
+        <div className="flex flex-col w-50 mt-4  ">
+          <div
+            className="text-sm text-center opacity-50 hover:underline cursor-default"
+            onClick={() => toggleLogin()}
+          >
+            Don’t have an account?
+          </div>
         </div>
       </div>
     </div>

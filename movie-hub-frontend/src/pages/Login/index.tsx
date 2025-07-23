@@ -8,11 +8,11 @@ import { UserState } from "@/types/movie";
 
 interface LoginProps{
 
-  setUser: React.Dispatch<React.SetStateAction<UserState>>
+  // setUser: React.Dispatch<React.SetStateAction<UserState>>
 
 }
 
-const Login: React.FC<LoginProps> = ({setUser}) => {
+const Login: React.FC<LoginProps> = () => {
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -63,14 +63,14 @@ const Login: React.FC<LoginProps> = ({setUser}) => {
               loginInput={loginInput}
               setLoginInput={setLoginInput}
               toggleLogin={toggleLogin}
-              setUser={setUser}
+              // setUser={setUser}
             />
           ) : (
             <SignupBox
               signupInput={signupInput}
               setSignupInput={setSignupInput}
               toggleLogin={toggleLogin}
-              setUser={setUser}
+              setUser={() => {}}
             />
           )}
         </div>

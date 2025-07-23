@@ -1,29 +1,33 @@
+import { useAuth } from "@/context/authContext"
 import { UserState } from "@/types/movie"
+import { parse } from "path"
+// import { parse } from "path"
 import { useEffect, useState } from "react"
 
 
 export const useUser = () => {
 
-    const [user,setUser] = useState<UserState>()
-    const [isUserLoading,setIsUserLoading] = useState(true)
+    // const [user,setUser] = useState<UserState>()
+
+    const { state, dispatch } = useAuth()
+    const [isUserLoading, setIsUserLoading] = useState(true)
 
 
     useEffect(() => {
 
         const addedUser = localStorage.getItem("user")
 
-        if(addedUser){
-
+        if (addedUser) {
             const parsedUser = JSON.parse(addedUser)
-            setUser(parsedUser)
+            dispatch({type: "LOGIN", payload: {...parsedUser, isAuthenticated: true}})
         }
         setIsUserLoading(false)
 
-    },[])
+    }, [])
 
     return {
-        user,
-        setUser,
+        state,
+        dispatch,
         isUserLoading
     }
 }

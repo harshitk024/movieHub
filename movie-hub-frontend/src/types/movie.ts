@@ -8,7 +8,7 @@ export interface Movie{
   overview: string,
   original_language: string,
   poster_path: string,
-  genre_ids: Array<string>,
+  genre_ids?: Array<string>,
   genres?: Array<Genre>;
   popularity: number,
   release_date: string,
@@ -31,8 +31,9 @@ export interface MovieCardProps {
 export interface User{
 
   username: string,
-  email : string
-  
+  email : string,
+  watchlist: Array<string>,
+  liked: Array<string>
 }
 
 export interface UserState {

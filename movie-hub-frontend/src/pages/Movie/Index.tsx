@@ -1,21 +1,53 @@
 import { useMovie } from "@/hooks/useMovie";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
-import { ArrowLeft, Star, Calendar, Clock, Play, Bookmark, Share2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import {
+  ArrowLeft,
+  Star,
+  Calendar,
+  Clock,
+  Play,
+  Bookmark,
+  Share2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import AuthorizedServices from "@/services/authorized_reqs";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/authContext";
+import { useState } from "react";
+import ReactStars from "react-rating-stars-component";
+import { ToastProvider, ToastViewport, Toast } from "@/components/ui/toast";
 
 const Index = () => {
   const { id } = useParams();
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { movie, loading } = useMovie(id);
+  const [watchlist, setWatchlist] = useState(
+    JSON.parse(localStorage.getItem("watchlist"))
+  );
+  const [watchlisted, setWatchlisted] = useState(false);
+  const [open, setOpen] = useState(false);
 
   console.log(id);
 
-  const { movie, loading } = useMovie(id);
+  const handleWatchlist = async () => {
+    const { watchlisted, id } = await AuthorizedServices.toggleWatchlist(
+      movie.id
+    );
 
-  if(loading) return (<h1>wait....</h1>)
+    watchlisted ? setWatchlisted(true) : setWatchlisted(false);
+
+    if (!watchlisted) {
+      setWatchlist(watchlist.filter((wid) => wid !== id));
+    }
+  };
+
+  const ratingChanged = (newRating) => {
+    console.log(newRating)
+  }
+
+  if (loading) return <h1>wait....</h1>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
@@ -31,7 +63,6 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/10 to-gray" />
         </div>
 
-
         {/* Content */}
         <div className=" relative container mx-auto px-4 py-8">
           {/* Back Button */}
@@ -46,12 +77,24 @@ const Index = () => {
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {/* Poster */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 flex flex-col">
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
                 className="w-80 h-auto rounded-xl shadow-2xl border border-border/50"
               />
+              <div className="self-center">
+                <ReactStars
+                  count={5}
+                  onChange={ratingChanged}
+                  size={60}
+                  isHalf={true}
+                  emptyIcon={<i className="far fa-star"></i>}
+                  halfIcon={<i className="fa fa-star-half-alt"></i>}
+                  fullIcon={<i className="fa fa-star"></i>}
+                  activeColor="#ffd700"
+                />
+              </div>
             </div>
 
             {/* Movie Info */}
@@ -69,7 +112,7 @@ const Index = () => {
 
                   <div className="flex items-center space-x-1">
                     <Clock className="h-4 w-4" />
-                    <span>{movie.runtime}</span> 
+                    <span>{movie.runtime}</span>
                   </div>
 
                   {movie.vote_average > 0 && (
@@ -99,17 +142,41 @@ const Index = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-4">
+                  <ToastProvider swipeDirection="right">
+                    <Button
+                      variant="outline"
+                      className="hover:bg-white/70"
+                      onClick={handleWatchlist}
+                    >
+                      {watchlist.includes(movie.id) || watchlisted ? (
+                        <>
+                          <Bookmark
+                            className="h-4 w-4 mr-2"
+                            fill="bg-primary"
+                          />
+                          Added
+                        </>
+                      ) : (
+                        <>
+                          <Bookmark className="h-4 w-4 mr-2" />
+                          Add to watchlist
+                        </>
+                      )}
+                    </Button>
+                    <Toast open={open} onOpenChange={setOpen} variant="default">
+                      ✅ Added to Watchlist
+                    </Toast>
+                    <ToastViewport className="fixed top-5 right-5 z-50 flex flex-col gap-2" />
+                  </ToastProvider>
+
                   <Button className="bg-primary hover:bg-primary/90">
                     <Play className="h-4 w-4 mr-2" />
                     Watch Trailer
                   </Button>
-
-                  <Button variant="outline" className="hover:bg-white/70">
-                    <Bookmark className="h-4 w-4 mr-2" />
-                    Add to Watchlist
-                  </Button>
-
-                  <Button variant="ghost" className="hover:bg-primary/80 text-white">
+                  <Button
+                    variant="ghost"
+                    className="hover:bg-primary/80 text-white"
+                  >
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>

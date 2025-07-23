@@ -8,13 +8,12 @@ import {useMovies}  from "./hooks/useMovies";
 import NotFound from "./pages/Home/NotFound";
 import LoginPage from "./pages/Login/index"
 import { useUser } from "./hooks/useUser";
+import WatchlistPage from "@/pages/Watchlist/Index"
 
 const App = () => {
 
-  const { movies, loading, searchTerm, setSearchTerm, genres,failed,filteredCount,totalMovies} = useMovies();
-  const {user,setUser,isUserLoading} = useUser()
-
-  console.log(user)
+  const {state,dispatch,isUserLoading} = useUser()
+  console.log(state.user)
 
   if(isUserLoading) {
     return <div></div>
@@ -28,19 +27,11 @@ const App = () => {
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={user ? <Index 
-                                  movies = {movies} 
-                                  loading = {loading} 
-                                  searchTerm = {searchTerm} 
-                                  setSearchTerm = {setSearchTerm}
-                                  genres = {genres}
-                                  failed = {failed}
-                                  filteredCount={filteredCount}
-                                  totalMovies={totalMovies}  /> : <Navigate replace to = "/login" />} />
-        
+          <Route path="/" element={state.user !== null ? <Index /> : <Navigate replace to = "/login" />} />
           <Route path="/:id" element={<MoviePage />} />
           <Route path="*" element={<NotFound />}  />
-          <Route path="/login" element = {<LoginPage setUser = {setUser} />} />
+          <Route path="/login" element = {<LoginPage />} />
+          <Route path="/watchlist" element = {<WatchlistPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

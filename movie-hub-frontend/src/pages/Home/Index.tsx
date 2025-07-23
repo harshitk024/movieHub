@@ -4,7 +4,12 @@ import SearchBar from '../../components/SearchBar';
 import MovieCard from '../../components/MovieCard';
 import LoadingSkeleton from '../../components/LoadingSkeleton';
 
-const Index = ({ movies, loading, searchTerm, setSearchTerm, genres,failed,filteredCount,totalMovies}) => {
+import { useMovies } from '@/hooks/useMovies';
+
+const Index = () => {
+
+  const { movies, loading, searchTerm, setSearchTerm, genres,failed,filteredCount,totalMovies} = useMovies();
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">

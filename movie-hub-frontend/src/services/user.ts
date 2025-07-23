@@ -29,6 +29,7 @@ const login_user = async (user: { username: string, password: string }) => {
     const result = await axios.post(`${baseUrl}/login/`, user)
     const { data } = await result
     localStorage.setItem("user", JSON.stringify(data))
+    localStorage.setItem("watchlist",JSON.stringify(data.user.watchlist))
     console.log(result)
 
     return data

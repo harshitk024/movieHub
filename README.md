@@ -89,6 +89,21 @@ npm run dev
 
 ```
 
+## Screenshots 
+
+
+### Login 
+
+![Login](./assets/Login.png)
+
+### Homepage 
+
+![Homepage](./assets/browse.png)
+![search](./assets/search.png)
+
+### Movie 
+
+![Movie](./assets/movie.png)
 
 
 

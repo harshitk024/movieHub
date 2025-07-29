@@ -2,15 +2,14 @@ import { Star, Calendar} from "lucide-react";
 import { MovieCardProps } from "../types/movie";
 import { useNavigate } from "react-router-dom";
 
-
-const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie }: MovieCardProps) => {
 
   const navigate = useNavigate()
 
-  const handleClick = () => {
-
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     navigate(`/${movie.id}`)
   }
+
 
   return (
     <div onClick={handleClick}
@@ -49,7 +48,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
           {(
             <div className="flex items-center space-x-1 text-yellow-400">
               <Star className="h-4 w-4 fill-current" />
-              <span className="text-sm font-medium">{movie.vote_average !== 0 ? movie.vote_average : "N/A"}</span>
+              <span className="text-sm font-medium">{movie.vote_average !== 0 ? `${(movie.vote_average / 2).toFixed(1)}/5` : "N/A"}</span>
             </div>
           )}
         </div>

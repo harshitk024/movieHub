@@ -13,6 +13,7 @@ export interface Movie{
   popularity: number,
   release_date: string,
   vote_average: number,
+  user_rating?: number,
   vote_count: number,
   runtime: number
 }
@@ -32,8 +33,11 @@ export interface User{
 
   username: string,
   email : string,
-  watchlist: Array<string>,
-  liked: Array<string>
+  watchlist: Array<Number>,
+  fav: Array<Number>,
+  rating: Array<{tmdb_id: Number,rating: Number}>
+
+
 }
 
 export interface UserState {

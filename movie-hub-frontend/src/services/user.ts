@@ -1,5 +1,4 @@
 import axios from "axios"
-
 const baseUrl = "http://127.0.0.1:8000/user"
 
 
@@ -28,8 +27,12 @@ const login_user = async (user: { username: string, password: string }) => {
 
     const result = await axios.post(`${baseUrl}/login/`, user)
     const { data } = await result
+
+    console.log(data)
     localStorage.setItem("user", JSON.stringify(data))
     localStorage.setItem("watchlist",JSON.stringify(data.user.watchlist))
+    localStorage.setItem("ratings", JSON.stringify(data.user.ratings))
+    localStorage.setItem("fav",JSON.stringify(data.user.fav))
     console.log(result)
 
     return data

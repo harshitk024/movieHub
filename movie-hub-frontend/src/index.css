@@ -139,4 +139,21 @@ All colors MUST be HSL.
     font-weight: 800;
     font-size: xx-large;
   }
+
+  .user-icon {
+
+    height: 200px;
+    width: 200px;
+    background: linear-gradient(
+    to right,
+    rgba(var(--primary), 0.2),
+    rgba(var(--primary), 0.1),
+    var(--background)
+  );
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(4px);
+  }
+
+
 }
+

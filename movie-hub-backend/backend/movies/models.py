@@ -27,7 +27,7 @@ class Movie(models.Model):
 class UserMovieAction(models.Model):
 
     ACTION_CHOICES = (
-        ('like','Like'),
+        ('fav','Fav'),
         ('watchlist',"Watchlist")
     )
 
@@ -38,3 +38,16 @@ class UserMovieAction(models.Model):
     class Meta: 
 
         unique_together = ("user","movie","action")
+
+
+class UserMovieRating(models.Model):
+
+    user  = models.ForeignKey(User,on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie,on_delete=models.CASCADE)
+    ratings = models.DecimalField(decimal_places=1,max_digits=2)
+
+    class Meta:
+
+        unique_together = ("user","movie","ratings")
+
+

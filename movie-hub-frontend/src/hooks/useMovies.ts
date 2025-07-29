@@ -14,18 +14,7 @@ export const useMovies = () => {
   const [failed, setFailed] = useState(false)
 
 
-  const updateMovies = (movies,genres) => {
-
-    const updatedMovies = movies.map((movie) => ({
-      ...movie,
-      genres: movie.genre_ids.map((id) => (
-        genres.find((gen) => Number(gen.id) === Number(id))
-      ))
-    }))
-
-    setMovies(updatedMovies)
-    return updatedMovies
-  }
+ 
 
 
   // Simulate API loading
@@ -37,6 +26,7 @@ export const useMovies = () => {
       const movieResult = await MovieService.getMovies()
       const genreResult = await MovieService.getGenres()
 
+      console.log(genreResult)
 
       setGenres(genreResult)
       updateMovies(movieResult,genreResult)
@@ -48,6 +38,29 @@ export const useMovies = () => {
 
 
   }, []);
+
+   const updateMovies = (movies,genres) => {
+
+    console.log(movies)
+
+    const updatedMovies = movies.map((movie) => {
+
+      console.log("movie Genres", movie.genre_ids)
+      console.log("Genres", genres)
+      
+      
+      return ({
+      ...movie,
+      genres:movie.genre_ids.map((id) => (
+        genres.find((gen) => Number(gen.id) === Number(id))
+      )) 
+    })})
+
+    console.log("updated Movies", updatedMovies)
+
+    setMovies(updatedMovies)
+    return updatedMovies
+  }
 
 
   // Filter movies based on search term
@@ -72,6 +85,8 @@ export const useMovies = () => {
   useEffect(() => {
 
     const trimmed = searchTerm.trim()
+
+    if(!genres.length) return;
 
     if (!trimmed) {
       MovieService.getMovies().then(result => {

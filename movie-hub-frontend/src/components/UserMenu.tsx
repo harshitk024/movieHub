@@ -1,22 +1,34 @@
 import { useAuth } from "@/context/authContext";
 import { Button } from "./ui/button";
-import { User } from "lucide-react";
-import { LogOut, Settings } from "lucide-react";
+import { Star, User } from "lucide-react";
+import { LogOut, Settings, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-const UserMenu = () => {
 
-  const {dispatch} = useAuth()
-  const navigate = useNavigate()
+
+const UserMenu: React.FC = () => {
+  const { dispatch } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch({type: "LOGOUT"})
-    localStorage.clear()
-    navigate("/")
-  }
+    dispatch({ type: "LOGOUT" });
+    localStorage.clear();
+    navigate("/");
+  };
 
-  
+  const handleFav = () => {
+    navigate("/favourites");
+  };
+
+  const handleRatings = () => {
+    navigate("/ratings");
+  };
+
+  const handleUser = () => {
+    navigate("/user");
+  };
+
   return (
-    <div className="relative group">
+    <div className="relative group z-10">
       <Button
         variant="ghost"
         size="icon"
@@ -28,14 +40,27 @@ const UserMenu = () => {
       <div className="absolute right-0  w-48 bg-white rounded-md shadow-lg group-hover:block hidden">
         <ul className="py-2">
           <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-            <div className="flex gap-2 items-center">
-              <User width={"15px"} />
+            <div className="flex gap-2 items-center" onClick={handleUser}>
+              <User width={"15px"} fill="bg-primary" />
               Profile
             </div>
           </li>
           <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            <div className="flex gap-2 items-center" onClick={handleFav}>
+              <Heart width={"15px"} color="red" fill="red" />
+              Favourites
+            </div>
+          </li>
+          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            <div className="flex gap-2 items-center" onClick={handleRatings}>
+              <Star width={"15px"} color="yellow" fill="#F6BE00" />
+              Your ratings
+            </div>
+          </li>
+
+          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
             <div className="flex gap-2 items-center">
-              <Settings width={"15px"} />
+              <Settings width={"15px"} fill="gray" />
               Settings
             </div>
           </li>

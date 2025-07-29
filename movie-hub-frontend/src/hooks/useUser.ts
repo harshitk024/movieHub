@@ -1,8 +1,7 @@
 import { useAuth } from "@/context/authContext"
-import { UserState } from "@/types/movie"
-import { parse } from "path"
-// import { parse } from "path"
 import { useEffect, useState } from "react"
+import AuthorizedServices from "@/services/authorized_reqs"
+
 
 
 export const useUser = () => {
@@ -19,7 +18,7 @@ export const useUser = () => {
 
         if (addedUser) {
             const parsedUser = JSON.parse(addedUser)
-            dispatch({type: "LOGIN", payload: {...parsedUser, isAuthenticated: true}})
+            dispatch({ type: "LOGIN", payload: { ...parsedUser, isAuthenticated: true } })
         }
         setIsUserLoading(false)
 

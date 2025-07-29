@@ -4,15 +4,33 @@ from rest_framework import status
 from .models import Movie,Genre
 from .serializers import MovieSerializer
 import requests
+import environ
 
-API_KEY="7a33e1786754d93b478eacaa3c6435a3"
 
+env = environ.Env()
+environ.Env.read_env(env_file="../backend/.env")
+API_KEY = env('TMDB_API_KEY')
+BASE_URL= "https://api.themoviedb.org"
 @api_view(['GET'])
-def get_movies(request):
+def get_trending_movies(request):
 
-    movies = Movie.objects.all()
-    serializer = MovieSerializer(movies, many=True)
-    return Response(serializer.data)
+    query = request.GET.get("query","")
+
+    if not query :
+        query = "week"
+
+    tmdb_url = f"{BASE_URL}/3/trending/movie/{query}?api_key={API_KEY}"
+
+    response = requests.get(tmdb_url)
+
+    if response.status_code != 200:
+        return Response({"error": response},status=status.HTTP_502_BAD_GATEWAY)
+    
+    data = response.json().get('results',[])
+
+    return Response(data,status=status.HTTP_200_OK)
+
+
 
 
 @api_view(['GET'])
@@ -24,7 +42,7 @@ def search_movies(request):
 
         return Response({"error": "Query parameter is required"},status=status.HTTP_400_BAD_REQUEST)
     
-    tmdb_url = f"https://api.themoviedb.org/3/search/movie?api_key={API_KEY}&query={query}"
+    tmdb_url = f"{BASE_URL}/3/search/movie?api_key={API_KEY}&query={query}"
 
     response = requests.get(tmdb_url)
 
@@ -34,32 +52,51 @@ def search_movies(request):
     data = response.json().get('results',[])
 
 
-    genre_map = {}
+    return Response([movie for movie in data if movie["popularity"] > 1 and movie['vote_count'] > 1],status=status.HTTP_200_OK)
 
-    genres = Genre.objects.all()
 
-    for g in genres:
-
-        genre_map[g.id] = g.name
-
-    formatted_results = []
-
-    for movie in data:
-
-        formatted_results.append({
-            'id': movie['id'],
-            'adult': movie.get('adult',False),
-            'backdrop_path': movie.get('backdrop_path'),
-            'title': movie.get('title', ''),
-            'overview': movie.get('overview', ''),
-            'original_language': movie.get('original_language'),
-            'poster_path': movie.get('poster_path'),
-            'genres': [{'id': g_id, 'name': genre_map.get(g_id, '')} for g_id in movie.get('genre_ids',[])],
-            'popularity': movie.get('popularity', 0.0),
-            'release_date': movie.get("release_date"),
-            'vote_average': movie.get('vote_average', 0.0),
-            'vote_count': movie.get('vote_count', 0),
-        })
     
-    return Response(formatted_results)
+
+@api_view(["GET"])
+def get_genres(request):
+
+    tmdb_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={API_KEY}"
+
+    response = requests.get(tmdb_url)
+
+    if response.status_code != 200:
+        return Response({"error": "TMDB request failed"},status=response.status_code)
+    
+    data = response.json().get("genres",[])
+
+    return Response(data,status=status.HTTP_200_OK)
+
+
+
+@api_view(["GET"])
+def get_movie_by_id(request):
+
+
+    id = request.GET.get("query")
+
+    tmdb_url = f"{BASE_URL}/3/movie/{id}?api_key={API_KEY}"
+
+    response = requests.get(tmdb_url)
+
+    if response.status_code != 200:
+        return Response({"error": "TMDB request failed"},status=response.status_code)
+    
+    data = response.json()
+
+    return Response(data,status=status.HTTP_200_OK)
+
+
+    
+
+    
+
+
+
+
+
 

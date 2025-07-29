@@ -1,8 +1,10 @@
 import type { Config } from "tailwindcss";
 
 export default {
+	safelist: ["user-icon"],
 	darkMode: ["class"],
 	content: [
+		"./src/**/*.{js,ts,jsx,tsx}", 
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",

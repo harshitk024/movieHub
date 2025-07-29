@@ -1,51 +1,67 @@
 import { useMovie } from "@/hooks/useMovie";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
-import {
-  ArrowLeft,
-  Star,
-  Calendar,
-  Clock,
-  Play,
-  Bookmark,
-  Share2,
-} from "lucide-react";
+import { Calendar, Clock, Bookmark, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import AuthorizedServices from "@/services/authorized_reqs";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/authContext";
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { ToastProvider, ToastViewport, Toast } from "@/components/ui/toast";
+import BackToButton from "@/components/BacktoButton";
 
 const Index = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { movie, loading } = useMovie(id);
-  const [watchlist, setWatchlist] = useState(
-    JSON.parse(localStorage.getItem("watchlist"))
-  );
-  const [watchlisted, setWatchlisted] = useState(false);
+  const {
+    movie,
+    loading,
+    currRating,
+    setCurrRating,
+    action,
+    setAction,
+    actionDone,
+    setActionDone,
+  } = useMovie(id);
   const [open, setOpen] = useState(false);
 
-  console.log(id);
-
-  const handleWatchlist = async () => {
+  const handleWatchlist = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const { watchlisted, id } = await AuthorizedServices.toggleWatchlist(
       movie.id
     );
 
-    watchlisted ? setWatchlisted(true) : setWatchlisted(false);
+    watchlisted
+      ? setActionDone({ ...actionDone, watchlisted: true })
+      : setActionDone({ ...actionDone, watchlisted: false });
 
     if (!watchlisted) {
-      setWatchlist(watchlist.filter((wid) => wid !== id));
+      setAction({
+        ...action,
+        watchlist: action.watchlist.filter((wid) => wid !== id),
+      });
     }
   };
 
-  const ratingChanged = (newRating) => {
-    console.log(newRating)
-  }
+  const handleFav = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    const { fav, id } = await AuthorizedServices.toggleFav(movie.id);
+
+    fav
+      ? setActionDone({ ...actionDone, fav: true })
+      : setActionDone({ ...actionDone, fav: false });
+
+    if (!fav) {
+      setAction({ ...action, fav: action.fav.filter((fid) => fid !== id) });
+    }
+  };
+
+  const ratingChanged = async (newRating: string) => {
+    await AuthorizedServices.toggleRating({
+      movie_id: movie.id,
+      rating: newRating,
+    });
+
+    setCurrRating(newRating);
+  };
 
   if (loading) return <h1>wait....</h1>;
 
@@ -53,7 +69,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
       <Header />
       <div className="relative">
-        <div className="absolute inset-0 h-[70vh] overflow-hidden">
+        <div className="absolute inset-0 h-[70vh] overflow-hidden z-0">
           <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt={movie.title}
@@ -63,17 +79,8 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/10 to-gray" />
         </div>
 
-        {/* Content */}
         <div className=" relative container mx-auto px-4 py-8">
-          {/* Back Button */}
-          <Button
-            onClick={() => navigate("/")}
-            variant="ghost"
-            className="mb-6 hover:bg-primary/10"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Movies
-          </Button>
+          <BackToButton page={-1} />
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {/* Poster */}
@@ -83,28 +90,32 @@ const Index = () => {
                 alt={movie.title}
                 className="w-80 h-auto rounded-xl shadow-2xl border border-border/50"
               />
-              <div className="self-center">
+              <div className="self-start flex items-center gap-5">
                 <ReactStars
+                  key={currRating}
                   count={5}
                   onChange={ratingChanged}
-                  size={60}
+                  size={48}
+                  value={currRating}
                   isHalf={true}
                   emptyIcon={<i className="far fa-star"></i>}
                   halfIcon={<i className="fa fa-star-half-alt"></i>}
                   fullIcon={<i className="fa fa-star"></i>}
                   activeColor="#ffd700"
                 />
+                <div className="font-bold text-4xl">
+                  {currRating === null ? "N/A" : `${currRating}/5`}
+                </div>
               </div>
             </div>
 
-            {/* Movie Info */}
-            <div className="flex-1 space-y-6 pt-8 lg:pt-16">
+            <div className="flex-1">
               <div>
-                <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 text-white">
+                <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4  md:text-white ">
                   {movie.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-6 text-white">
+                <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-6 md:text-white">
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
                     <span>{movie.release_date.slice(0, 4)}</span>
@@ -117,9 +128,20 @@ const Index = () => {
 
                   {movie.vote_average > 0 && (
                     <div className="flex items-center space-x-1 text-yellow-400">
-                      <Star className="h-4 w-4 fill-current" />
-                      <span className="font-medium">
-                        {movie.vote_average.toFixed(1)}
+                      <ReactStars
+                        count={5}
+                        onChange={ratingChanged}
+                        size={20}
+                        value={(movie.vote_average / 2).toFixed(1)}
+                        isHalf={true}
+                        edit={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="white"
+                      />
+                      <span className="font-medium text-white">
+                        {(movie.vote_average / 2).toFixed(1)}
                       </span>
                     </div>
                   )}
@@ -137,18 +159,21 @@ const Index = () => {
                   ))}
                 </div>
 
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 text-white">
-                  {movie.overview}
-                </p>
+                <div className="max-h-20 overflow-y-auto pr-2 ">
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-8 md:text-white ">
+                    {movie.overview}
+                  </p>
+                </div>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 mt-10 md:mt-5">
                   <ToastProvider swipeDirection="right">
                     <Button
                       variant="outline"
                       className="hover:bg-white/70"
                       onClick={handleWatchlist}
                     >
-                      {watchlist.includes(movie.id) || watchlisted ? (
+                      {action.watchlist.includes(movie.id) ||
+                      actionDone.watchlisted ? (
                         <>
                           <Bookmark
                             className="h-4 w-4 mr-2"
@@ -169,16 +194,17 @@ const Index = () => {
                     <ToastViewport className="fixed top-5 right-5 z-50 flex flex-col gap-2" />
                   </ToastProvider>
 
-                  <Button className="bg-primary hover:bg-primary/90">
-                    <Play className="h-4 w-4 mr-2" />
-                    Watch Trailer
-                  </Button>
                   <Button
-                    variant="ghost"
-                    className="hover:bg-primary/80 text-white"
+                    onClick={handleFav}
+                    className="flex justify-center items-center bg-primary hover:bg-primary/90 rounded-full w-12 h-12 group "
                   >
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Share
+                    {action.fav.includes(movie.id) || actionDone.fav ? (
+                      <Heart className="fill-yellow md:fill-white" />
+                    ) : (
+                      <>
+                        <Heart className="group-hover:fill-white" />
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

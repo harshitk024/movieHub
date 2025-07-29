@@ -181,6 +181,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://moviehub.netlify.app"
 ]
 
-ALLOWED_HOSTS = ["moviehub.onrender.com"]
+ALLOWED_HOSTS = ["moviehub-0fa5.onrender.com"]
 AUTH_USER_MODEL = 'users.User'
 

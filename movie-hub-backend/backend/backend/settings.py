@@ -86,7 +86,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-LOCAL_DB = {
+if DEBUG: 
+
+
+    LOCAL_DB = {
 
     'ENGINE': 'django.db.backends.postgresql',
     'NAME': env('DATABASE_NAME'),
@@ -95,15 +98,25 @@ LOCAL_DB = {
     'HOST': 'localhost',
     'PORT': '5432'
 
-}
+    }
 
-DATABASES = {
+    DATABASES = {
+        'default': LOCAL_DB
+    }
+
+else : 
+
+    DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL', default=None),
         conn_max_age=600,
         ssl_require=not DEBUG
-    ) if not DEBUG else LOCAL_DB
-}
+    ) 
+ }
+
+
+
+
 
 
 # Password validation

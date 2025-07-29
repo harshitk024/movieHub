@@ -33,6 +33,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False,cast=bool)
 ALLOWED_HOSTS = [config('ALLOWED_HOSTS')]
 TMDB_API_KEY = config("TMDB_API_KEY")
+OPENROUTER_API_KEY=config("OPENROUTER_API_KEY")
 
 
 # Application definition

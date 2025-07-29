@@ -11,6 +11,11 @@ from movies.models import Movie,UserMovieAction,UserMovieRating
 from users.utils import getUserRatedAndFavMovies
 from django.core.exceptions import ObjectDoesNotExist
 import requests
+import environ
+
+env = environ.Env()
+environ.Env.read_env(env_file="../backend/.env")
+OPEN_ROUTER_API_KEY = env('OPENROUTER_API_KEY')
 # Create your views here.
 
 User = get_user_model()
@@ -199,7 +204,6 @@ def like_movie(request):
 
 
 
-OPEN_ROUTER_API_KEY = "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"
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

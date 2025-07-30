@@ -24,6 +24,7 @@ Live server link - [Moviehub](https://movies-hub-project.netlify.app)
 - 🧑‍💼 User authentication & authorization (optional)
 - 📱 Responsive UI for all devices
 - 📊 Efficient API design and data handling
+- 🧠 AI-powered personality-based summary based on user preferences
 
 ## Installation & Setup 
 
@@ -108,6 +109,20 @@ npm run dev
 ![Movie](./assets/movie.png)
 
 
+📄 License
+
+This project is licensed under the MIT License.
+
+
+
+🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+
+🙌 Acknowledgements
+TMDB for movie data
+
+Open Source libraries and frameworks
 
 
 

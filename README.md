@@ -2,7 +2,7 @@
 
 MovieHub is a full-stack movie application that allows users to browse, search, and interact with movie-related data. Built with modern technologies, it features a responsive and sleek UI, seamless API integration, and robust backend services.
 
-Live server link - ![Live]((https://movies-hub-project.netlify.app/))
+Live server link - ![Moviehub](https://movies-hub-project.netlify.app/)
 
 ## 🚀 Tech Stack
 

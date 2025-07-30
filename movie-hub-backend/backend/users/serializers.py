@@ -11,14 +11,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta: 
         model = User
-        fields = ['username','id','watchlist']
+        fields = ['username','id','watchlist','fav']
 
     def get_watchlist(self,user):
 
         watchlist_actions = UserMovieAction.objects.filter(user=user,action="watchlist")
         return [action.movie.tmdb_id for action in watchlist_actions]
     
-    def get_watchlist(self,user):
+    def get_fav(self,user):
 
         fav_actions = UserMovieAction.objects.filter(user=user,action="fav")
         return [action.movie.tmdb_id for action in fav_actions]

@@ -54,7 +54,10 @@ def register(request):
     return Response({
         'user': {
             'username': user.username,
-            'email': user.email
+            'email': user.email,
+            'watchlist': [],
+            'fav': [],
+            'ratings': []
         },
         'access': str(refresh.access_token),
         'refresh': str(refresh)

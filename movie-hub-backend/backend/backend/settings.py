@@ -183,7 +183,7 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "https://movies-hub-project.netlify.app/"
+    "https://movies-hub-project.netlify.app"
 ]
 
 AUTH_USER_MODEL = 'users.User'

@@ -41,8 +41,7 @@ const Index = () => {
     }
   };
 
-  const handleFav = async (e: React.MouseEvent<HTMLButtonElement>) => {
-
+  const handleFav = async () => {
     const { fav, id } = await AuthorizedServices.toggleFav(movie.id);
 
     fav
@@ -199,12 +198,13 @@ const Index = () => {
                     className="flex justify-center items-center bg-primary hover:bg-primary/90 rounded-full w-12 h-12 group "
                   >
                     {action.fav.includes(movie.id) || actionDone.fav ? (
-                      <Heart className="fill-yellow md:fill-white" />
+                      <Heart className="fill-white" />
                     ) : (
                       <>
-                        <Heart className="group-hover:fill-white" />
+                        <Heart className="" />
                       </>
                     )}
+
                   </Button>
                 </div>
               </div>

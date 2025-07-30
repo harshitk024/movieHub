@@ -91,7 +91,6 @@ const getUserProfile = async () => {
 
     try {
         const result = await api.get("/user-profile/")
-        localStorage.setItem("profile-summary", JSON.stringify(result.data.message))
         return result.data
 
     } catch (error) {

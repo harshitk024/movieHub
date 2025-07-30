@@ -31,7 +31,7 @@ environ.Env.read_env()
 SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False,cast=bool)
-ALLOWED_HOSTS = [config('ALLOWED_HOSTS')]
+
 TMDB_API_KEY = config("TMDB_API_KEY")
 OPENROUTER_API_KEY=config("OPENROUTER_API_KEY")
 
@@ -104,6 +104,8 @@ if DEBUG:
         'default': LOCAL_DB
     }
 
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=Csv())
+
 else : 
 
     DATABASES = {
@@ -112,7 +114,10 @@ else :
         conn_max_age=600,
         ssl_require=not DEBUG
     ) 
+
  }
+    ALLOWED_HOSTS = ["moviehub-0fa5.onrender.com"]
+
 
 
 
@@ -178,9 +183,8 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "https://moviehub.netlify.app"
+    "https://movies-hub-project.netlify.app/"
 ]
 
-ALLOWED_HOSTS = ["moviehub-0fa5.onrender.com"]
 AUTH_USER_MODEL = 'users.User'
 

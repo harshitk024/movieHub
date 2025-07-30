@@ -95,7 +95,7 @@ const RatedMoviesList = ({ movies }: {movies: Movie[]}) => {
       {movies.map((ratedMovie) => {
         return (
           <div
-            className="border-b-2 p-5 flex-col md:flex hover:bg-gray-100 "
+            className="border-b-2 p-5 flex flex-col md:flex-row hover:bg-gray-100 "
             key={ratedMovie.id}
             onClick={() => navigate(`/${ratedMovie.id}`) }
           >
@@ -138,7 +138,7 @@ const Index = () => {
         </h1>
         <RatedMoviesList movies={ratings} />
       </div>
-      <div className="flex flex-col p-5 gap-10"></div>
+      <div className="flex flex-col  p-5 gap-10"></div>
     </div>
   );
 };

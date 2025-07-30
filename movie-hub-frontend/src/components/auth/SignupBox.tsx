@@ -1,9 +1,9 @@
-// import GoogleLogin from "../ui/GoogleLogin"
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import UserService from "@/services/user";
 import { UserState } from "@/types/movie";
-// import {createUser} from "../../services/users";
+import { useAuth } from "@/context/authContext";
+import { useNavigate } from "react-router-dom";
 
 interface SignupInput {
   name: string;
@@ -25,13 +25,26 @@ const SignUp: React.FC<SignupProps> = ({
   setSignupInput,
   setUser
 }) => {
+
+  const {dispatch} = useAuth()
+  const navigate = useNavigate()
+
   
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true)
     const user = await UserService.create_user(signupInput);
+
+    if(user !== undefined){
+
+      dispatch({type: "LOGIN",payload: {...user,isAuthenticated:true}})
+      navigate("/")
+
+    } else {
+      window.alert("Signup Failed, try again")
+    }
 
     setSignupInput({
       name: "",
@@ -41,6 +54,7 @@ const SignUp: React.FC<SignupProps> = ({
     });
 
     setUser(user)
+    setIsLoading(false)
   };
   return (
     <div className="flex flex-col items-center justify-center">
@@ -54,11 +68,8 @@ const SignUp: React.FC<SignupProps> = ({
               <div>Create an account and browse your favourite movies</div>
             </div>
           </div>
-          {/* <GoogleLogin /> */}
         </div>
-        {/* <div className = "flex items-center justify-center p-8">
-            <div className = "text-base opacity-50">or</div>
-        </div> */}
+
         <form className="flex flex-col gap-2 mt-5" onSubmit={handleSignup}>
           <Input
             value={signupInput.name}
@@ -93,7 +104,7 @@ const SignUp: React.FC<SignupProps> = ({
             }
           />
 
-          <button
+             <button
             type="submit"
             className="bg-primary mt-4 text-white px-10 py-3 rounded-xl hover:bg-secondary-500 flex justify-center gap-8"
             disabled={isLoading}
@@ -111,7 +122,7 @@ const SignUp: React.FC<SignupProps> = ({
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  strokeWidth="4"
+                  strokeWidth="6"
                 ></circle>
                 <path
                   className="opacity-75"
@@ -121,7 +132,7 @@ const SignUp: React.FC<SignupProps> = ({
               </svg>
             )}
             {isLoading ? null : "Submit"}
-          </button>
+          </button>{" "}
         </form>
         <div className="flex flex-col w-60 my-5  ">
           <div className="text-sm text-center opacity-50 ">

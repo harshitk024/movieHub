@@ -33,8 +33,8 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="relative w-full md:w-1/2">
+    <div className="flex flex-col  md:flex-row">
+      <div className="relative w-full md:w-1/2 hidden md:block">
         <div className="absolute w-full">
           <img src={loginImage} className="h-screen w-full" />
           <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-black/80 to-background/20" />
@@ -63,7 +63,6 @@ const Login: React.FC<LoginProps> = () => {
               loginInput={loginInput}
               setLoginInput={setLoginInput}
               toggleLogin={toggleLogin}
-              // setUser={setUser}
             />
           ) : (
             <SignupBox

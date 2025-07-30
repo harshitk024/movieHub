@@ -11,6 +11,9 @@ const create_user = async (user: { name: string, username: string, email: string
         const { data } = await result
         console.log(data)
         localStorage.setItem("user", JSON.stringify(data))
+        localStorage.setItem("watchlist", JSON.stringify(data.user.watchlist))
+        localStorage.setItem("ratings", JSON.stringify(data.user.ratings))
+        localStorage.setItem("fav", JSON.stringify(data.user.fav))
         return data
 
     } catch (error) {
@@ -23,19 +26,19 @@ const create_user = async (user: { name: string, username: string, email: string
 
 const login_user = async (user: { username: string, password: string }) => {
 
-    try{
+    try {
 
-    const result = await axios.post(`${baseUrl}/login/`, user)
-    const { data } = await result
+        const result = await axios.post(`${baseUrl}/login/`, user)
+        const { data } = await result
 
-    console.log(data)
-    localStorage.setItem("user", JSON.stringify(data))
-    localStorage.setItem("watchlist",JSON.stringify(data.user.watchlist))
-    localStorage.setItem("ratings", JSON.stringify(data.user.ratings))
-    localStorage.setItem("fav",JSON.stringify(data.user.fav))
-    console.log(result)
+        console.log(data)
+        localStorage.setItem("user", JSON.stringify(data))
+        localStorage.setItem("watchlist", JSON.stringify(data.user.watchlist))
+        localStorage.setItem("ratings", JSON.stringify(data.user.ratings))
+        localStorage.setItem("fav", JSON.stringify(data.user.fav))
+        console.log(result)
 
-    return data
+        return data
 
     } catch (error) {
 

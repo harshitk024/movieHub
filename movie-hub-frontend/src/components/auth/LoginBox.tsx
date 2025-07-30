@@ -1,13 +1,9 @@
-// import GoogleLogin from "../ui/GoogleLogin";
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import UserService from "@/services/user";
-import { UserState } from "@/types/movie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
-// import {loginUser} from "../../services/users";
-// import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "@react-oauth/google";
+
 
 interface LoginInput {
   username: string;
@@ -18,7 +14,7 @@ interface LoginBoxProps {
   toggleLogin: () => void;
   loginInput: LoginInput;
   setLoginInput: React.Dispatch<React.SetStateAction<LoginInput>>;
-  // setUser: React.Dispatch<React.SetStateAction<UserState>>
+
 }
 
 const LoginBox: React.FC<LoginBoxProps> = ({
@@ -61,14 +57,11 @@ const LoginBox: React.FC<LoginBoxProps> = ({
           <div>
             <div className="h-primary">Welcome Back</div>
           </div>
-          {/* <GoogleLogin login = {login} /> */}
         </div>
-        {/* <div className = "flex items-center justify-center p-8">
-            <div className = "text-base opacity-50">or</div>
-        </div> */}
+  
         <form className="flex flex-col gap-2 mt-5" onSubmit={handleLogin}>
           <Input
-            placeholder="Enter email or username"
+            placeholder="Enter username"
             value={loginInput.username}
             onChange={(e) =>
               setLoginInput({ ...loginInput, username: e.target.value })

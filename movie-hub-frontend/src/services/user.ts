@@ -1,5 +1,5 @@
 import axios from "axios"
-const baseUrl = "http://127.0.0.1:8000/user"
+const baseUrl = `${import.meta.env.VITE_BACKEND_BASE_URL}/user`
 
 
 const create_user = async (user: { name: string, username: string, email: string, password: string }) => {

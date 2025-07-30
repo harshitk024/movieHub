@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Genre, Movie } from "@/types/movie"
 
-const baseLocalUrl = "http://127.0.0.1:8000/api/movies"
+const baseLocalUrl = `${import.meta.env.VITE_BACKEND_BASE_URL}/api/movies`
 
 
 const getMovies = async ():Promise<Movie[]> => {
@@ -22,7 +22,7 @@ const getMovies = async ():Promise<Movie[]> => {
 const getGenres = async () => {
     
     console.log("Getting genres")
-    const result = await axios.get<Genre[]>(`${baseLocalUrl}/genres`)
+    const result = await axios.get<Genre[]>(`${baseLocalUrl}/genres/`)
     console.log(result)
     return result.data
 }
